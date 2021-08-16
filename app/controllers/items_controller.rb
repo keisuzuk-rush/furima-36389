@@ -14,4 +14,8 @@ class ItemsController < ApplicationController
       redirect_to action: :index
     end
   end
+
+	def message_params
+		params.require(:item).permit(:image)
+	end
 end
