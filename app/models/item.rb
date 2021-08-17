@@ -20,6 +20,6 @@ class Item < ApplicationRecord
 			validates :prefecture_id
 			validates :delivery_time_id
 		end
-		validates :price, numericality: { in: 300..9999999 }, format: { with: /\A[0-9]+\z/ }
+		validates :price, numericality: { greater_than: 299, less_than: 10000000 }, format: { with: /\A[0-9]+\z/ }
 	end
 end
