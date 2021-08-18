@@ -1,8 +1,7 @@
 class ItemsController < ApplicationController
   before_action :move_to_index, except: [:index, :show]
-	before_action :set_item, only: [:show, :edit, :update]
-	before_action :user_check, only: [:edit, :update]
-
+  before_action :set_item, only: [:show, :edit, :update]
+  before_action :user_check, only: [:edit, :update]
 
   def index
     @items = Item.order('created_at DESC')
@@ -46,11 +45,11 @@ class ItemsController < ApplicationController
                                  :delivery_time_id, :price).merge(user_id: current_user.id)
   end
 
-	def set_item
-		@item = Item.find(params[:id])
-	end
+  def set_item
+    @item = Item.find(params[:id])
+  end
 
-	def user_check
-		redirect_to root_path if	@item.user != current_user
-	end
+  def user_check
+    redirect_to root_path if	@item.user != current_user
+  end
 end
