@@ -3,7 +3,7 @@ class OrdersController < ApplicationController
   before_action :set_item, only: [:index, :create]
   before_action :set_order_address, only: [:index, :new]
   before_action :user_check, only: :index
-	before_action :already_purchased, only: [:index]
+  before_action :already_purchased, only: [:index]
 
   def index
   end
@@ -55,7 +55,7 @@ class OrdersController < ApplicationController
     redirect_to root_path if	@item.user == current_user
   end
 
-	def already_purchased
+  def already_purchased
     redirect_to root_path if @item.order.present?
   end
 end
