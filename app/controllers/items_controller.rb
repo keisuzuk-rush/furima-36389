@@ -2,6 +2,7 @@ class ItemsController < ApplicationController
   before_action :move_to_index, except: [:index, :show]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :user_check, only: [:edit, :update, :destroy]
+	before_action :already_purchased, only: :edit
 
   def index
     @items = Item.order('created_at DESC')
@@ -57,4 +58,8 @@ class ItemsController < ApplicationController
   def user_check
     redirect_to root_path if	@item.user != current_user
   end
+
+	def already_purchased
+		redirect_to root_path if @item.order.present?
+	end
 end
