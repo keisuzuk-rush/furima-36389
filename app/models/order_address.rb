@@ -7,7 +7,7 @@ class OrderAddress
     validates :user_id
     validates :item_id
     validates :postal_code, format: { with: /\A[0-9]{3}-[0-9]{4}\z/ }
-    validates :prefecture_id, numericality: { other_than: 0 }
+    validates :prefecture_id, numericality: { other_than: 1 }
     validates :city
     validates :house_number
     validates :telephone_number, format: { with: /\A\d{10,11}\z/ }, numericality: { only_integer: true }

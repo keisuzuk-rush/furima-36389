@@ -10,7 +10,7 @@ RSpec.describe OrderAddress, type: :model do
 
   describe '商品購入のための情報登録' do
     context '情報の登録ができるとき' do
-      it 'postal_code、prefecture_id、city、house_number、telephone_number、tokenが存在すれば登録できる' do
+      it 'postal_code、prefecture_id、city、house_number、building_name、telephone_number、tokenが存在すれば登録できる' do
         expect(@order_address).to be_valid
       end
     end
@@ -25,10 +25,20 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include('Postal code is invalid')
       end
+      it 'postal_codeにハイフンが入っていなければ登録できない' do
+        @order_address.postal_code = '1234567'
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Postal code is invalid')
+      end
       it 'prefecture_idが空では登録できない' do
         @order_address.prefecture_id = ''
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Prefecture can't be blank")
+      end
+      it 'prefecture_idが{ --- }では登録できない' do
+        @order_address.prefecture_id = 1
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include('Prefecture must be other than 1')
       end
       it 'cityが空では登録できない' do
         @order_address.city = ''
@@ -64,6 +74,16 @@ RSpec.describe OrderAddress, type: :model do
         @order_address.token = nil
         @order_address.valid?
         expect(@order_address.errors.full_messages).to include("Token can't be blank")
+      end
+      it 'userが紐づいていなければ登録できない' do
+        @order_address.user_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("User can't be blank")
+      end
+      it 'itemが紐づいていなければ登録できない' do
+        @order_address.item_id = nil
+        @order_address.valid?
+        expect(@order_address.errors.full_messages).to include("Item can't be blank")
       end
     end
   end
