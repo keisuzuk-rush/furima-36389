@@ -1,14 +1,11 @@
 class OrdersController < ApplicationController
-  before_action :move_to_index, only: :index
+  before_action :authenticate_user!, only: :index
   before_action :set_item, only: [:index, :create]
-  before_action :set_order_address, only: [:index, :new]
-  before_action :user_check, only: :index
-  before_action :already_purchased, only: [:index]
+  before_action :user_check, only: [:index, :create]
+  before_action :already_purchased, only: [:index, :create]
 
   def index
-  end
-
-  def new
+    @order_address = OrderAddress.new
   end
 
   def create
@@ -23,10 +20,6 @@ class OrdersController < ApplicationController
   end
 
   private
-
-  def move_to_index
-    redirect_to new_user_session_path unless user_signed_in?
-  end
 
   def order_params
     params.require(:order_address).permit(:postal_code, :prefecture_id, :city, :house_number, :building_name, :telephone_number, :order_id, :user_id, :item_id).merge(
@@ -45,10 +38,6 @@ class OrdersController < ApplicationController
 
   def set_item
     @item = Item.find(params[:item_id])
-  end
-
-  def set_order_address
-    @order_address = OrderAddress.new
   end
 
   def user_check

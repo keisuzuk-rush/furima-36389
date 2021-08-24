@@ -1,8 +1,8 @@
 class ItemsController < ApplicationController
-  before_action :move_to_index, except: [:index, :show]
+  before_action :authenticate_user!, except: [:index, :show]
   before_action :set_item, only: [:show, :edit, :update, :destroy]
   before_action :user_check, only: [:edit, :update, :destroy]
-  before_action :already_purchased, only: :edit
+  before_action :already_purchased, only: [:edit, :update, :destroy]
 
   def index
     @items = Item.order('created_at DESC')
@@ -41,10 +41,6 @@ class ItemsController < ApplicationController
   end
 
   private
-
-  def move_to_index
-    redirect_to action: :index unless user_signed_in?
-  end
 
   def item_params
     params.require(:item).permit(:image, :text, :name, :category_id, :condition_id, :shipping_cost_id, :prefecture_id,
